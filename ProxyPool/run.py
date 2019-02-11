@@ -14,6 +14,7 @@ class Runner(object):
         for proxy in proxies:
             result = self.db.save(proxy)
             if not result:
+                print('保存失败')
                 break
 
     def del_all(self):

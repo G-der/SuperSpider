@@ -1,6 +1,6 @@
 import re
 import redis
-from settings import *
+from ProxyPool.settings import *
 
 
 class RedisClient(object):
@@ -20,7 +20,8 @@ class RedisClient(object):
             print("代理池已满，请删除或初始化")
             return None
         else:
-            self.db.sadd(REDIES_KEY, proxy)
+            result = self.db.sadd(REDIES_KEY, proxy)
+            return result
 
     def get_random(self):
         """随机获取代理"""
@@ -44,4 +45,6 @@ class RedisClient(object):
 
 if __name__ == '__main__':
     db = RedisClient()
-    db.get_count()
+    proxy = db.get_random().decode('utf-8')
+    print(type(proxy))
+    print(proxy)

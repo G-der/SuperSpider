@@ -9,4 +9,4 @@ DB_NUMBER = 1
 MAX_PROXIES = 100
 
 # 代理池初始化
-DBINIT = False
+DBINIT = True
