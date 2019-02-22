@@ -27,6 +27,37 @@ class BaseItem(scrapy.Item):
     data_from = scrapy.Field()  # 数据来源
 
 
+class ZhihuItem(scrapy.Item):
+    """知乎"""
+    collection = scrapy.Field()  # 表名
+    question = scrapy.Field()
+    username = scrapy.Field()
+    userfans = scrapy.Field()
+    user_url = scrapy.Field()
+    ans__url = scrapy.Field()
+    ans_detl = scrapy.Field()
+    pushtime = scrapy.Field()
+    follower = scrapy.Field()
+    anscommt = scrapy.Field()
+    update_datetime = scrapy.Field()  # 插入记录的时间
+
+
+class TBItem(scrapy.Item):
+    """淘宝"""
+    keyword = scrapy.Field()
+    title = scrapy.Field()
+    commodity_url = scrapy.Field()
+    price = scrapy.Field()
+    volume = scrapy.Field()
+    shop_name = scrapy.Field()
+    shop_url = scrapy.Field()
+    shop_location = scrapy.Field()
+
+
+
+
+
+
 
 
 

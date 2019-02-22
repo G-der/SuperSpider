@@ -1,33 +1,17 @@
-from scrapy.spiders import CrawlSpider, Rule
-from scrapy.linkextractors import LinkExtractor
-from SuperSpider import webmodel
+import scrapy
 import time
 from SuperSpider.items import BaseItem
+from SuperSpider.webmodel import set_model
 
 global model
-model = webmodel.set_model()
+model = set_model()
 
 
-def link_cath():
-    rules = []
-    try:
-        pages = LinkExtractor(allow=model.page_link_Re,
-                              restrict_xpaths=model.page_link_path)
-        rules.append(Rule(pages, callback=None, follow=True))
-    except:
-        pass
-    links = LinkExtractor(allow=model.comment_link_Re,
-                          restrict_xpaths=model.comment_link_path)
-    rules.append(Rule(links, callback="web_parse"))
-    return rules
-
-
-class SuperSpider(CrawlSpider):
-    """提取链接爬取"""
-    name = "CS"
+class PageSpider(scrapy.Spider):
+    """逐页抓取"""
+    name = "PS"
     allowed_domains = model.allow_domains
     start_urls = model.start_urls
-    rules = link_cath()
 
     def info(self, message, isPrint=True):
         # 控制台显示消息
@@ -53,8 +37,15 @@ class SuperSpider(CrawlSpider):
         if logOutput == True:
             self.logger.error(message)
 
-    def web_parse(self, response):
+    def parse(self, response):
         try:
+            # TODO 修改代码获取下一页链接
+            if response.xpath('//*[@class="next"]'):
+                next_page = response.xpath('//*[@class="next"]/@href').extract_first()
+                next_url = "https:" + next_page
+                yield scrapy.Request(next_url,callback=self.parse)
+                # print(next_url)
+
             title = response.xpath(model.title_path).extract_first()
             for each in response.xpath(model.eath_path):
                 username = each.xpath(model.username_path).extract_first()
